@@ -22,16 +22,16 @@ export function ModeToggle() {
 
   return (
     <>
-        <div>
+        <div className="flex items-center">
             <Switch 
                 className="w-10 h-6"
-                aria-label="Toggle theme"
+                aria-label="theme"
                 checked={isDark}
                 onClick={() => setIsDark(!isDark)}
             />
             <Button variant="ghost" className={cn("hover:bg-inherit hover:opacity-75 transition")} size="icon" onClick={() => setIsDark(!isDark)}>
-                <Sun className="h-[1.2rem] w-[1.2rem]" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem]" />
+              <Sun className={`h-[1.2rem] w-[1.2rem] icon-transition ${!isDark ? 'visible' : ''}`} />
+              <Moon className={`h-[1.2rem] w-[1.2rem] icon-transition ${isDark ? 'visible' : ''}`} />
             </Button>
         </div>
     </>

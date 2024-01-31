@@ -9,8 +9,3 @@ export type AssetSuccess = {
     externalId: string;
     createdAt: Date;
 }
-
-export type AssetFailed = {
-    success: boolean;
-    message: string;
-}
