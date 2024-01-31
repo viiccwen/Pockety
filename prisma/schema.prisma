@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+
+model User {
+  id            Int      @id @default(autoincrement())
+  externalId    String   @unique
+  
+  username      String   @unique
+  email_address String?  @unique
+  has_image     Boolean  @default(false)
+  image_url     String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  assets        Asset[]
+  costs         Cost[]
+  incomes       Income[]
+}
+
+model Asset {
+  id            Int      @id @default(autoincrement())
+  
+  name          String   @unique
+  initial_value Int
+  value         Int
+  category      assetType
+
+  user          User     @relation(fields: [externalId], references: [externalId])
+  externalId        String
+
+  createdAt     DateTime @default(now())
+
+  costs         Cost[]
+  incomes       Income[]
+}
+
+model Cost {
+  id            Int      @id @default(autoincrement())
+  
+  value         Int
+  description   String
+  category      costType
+
+  user          User     @relation(fields: [externalId], references: [externalId])
+  externalId        String
+
+  asset         Asset    @relation(fields: [assetId], references: [id])
+  assetId       Int
+
+  createdAt     DateTime @default(now())
+}
+
+model Income {
+  id            Int      @id @default(autoincrement())
+  
+  value         Int
+  description   String
+  category      incomeType
+
+  user          User     @relation(fields: [externalId], references: [externalId])
+  externalId        String
+
+  asset         Asset    @relation(fields: [assetId], references: [id])
+  assetId       Int
+
+  createdAt     DateTime @default(now())
+}
+
+enum assetType {
+  CASH
+  STOCK
+  BANK
+  CHECK
+  OTHER
+}
+
+enum costType {
+  FOOD
+  TRANSPORT
+  HEALTH
+  PHONE
+  EDUCATION
+  CLOTHING
+  OTHER
+}
+
+enum incomeType {
+  SALARY
+  INVESTMENT
+  PART_TIME
+  OTHER
+}
