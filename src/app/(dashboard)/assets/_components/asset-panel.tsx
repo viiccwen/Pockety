@@ -1,27 +1,32 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { AssetSuccess } from "@/lib/type/assets-type";
+import { AssetRecordType } from "@/lib/type";
 import { useEffect, useState } from "react";
 import { AssetAddButton } from "./asset-add-button";
 
 interface AssetsPanelProps {
     userId: string;
-    AssetsArray: AssetSuccess[];
+    AssetsArray: AssetRecordType[];
 };
 
 export const AssetsPanel = ( { userId, AssetsArray } : AssetsPanelProps ) => {
     const [totalAssets, setTotalAssets] = useState<number | string> ("載入中...");
+    const [totalDebit, setTotalDebit] = useState<number | string> ("載入中...");
 
     useEffect(() => {
         const CalculatingTotal = () => {
-            let total = 0;
-            
+            let assets = 0;
+            let debits = 0;
+
             AssetsArray.forEach((asset) => {
-                total += Number(asset.value);
+                assets += asset.value;
+                
+                if(asset.value < 0) debits += asset.value;
             })
     
-            setTotalAssets(total);
+            setTotalAssets(assets);
+            setTotalDebit(debits);
         }
 
         CalculatingTotal();
@@ -42,7 +47,12 @@ export const AssetsPanel = ( { userId, AssetsArray } : AssetsPanelProps ) => {
 
             {/* TODO: Implement debit */}
             <div className="flex flex-col justify-center">
-                <div className=" text-xl">$0</div>
+                <div className={`text-xl ${
+                    (typeof totalDebit === "string") ? 'text-black dark:text-white' : 
+                    (totalDebit < 0) ? 'text-red-500' : 'text-green-600'
+                }`}>
+                    ${totalDebit}
+                </div>
                 <p>負債</p>
             </div>
 

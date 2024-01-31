@@ -5,8 +5,9 @@ import { AssetsTable } from "./_components/asset-table";
 import { AssetsPanel } from "./_components/asset-panel";
 
 import { GetUserAssetAction } from "@/server/action/asset-action";
+import { AssetRecordType } from "@/lib/type";
 
-import { AssetSuccess } from "@/lib/type/assets-type";
+
 
 
 export default async function AssetsPage() {
@@ -14,7 +15,7 @@ export default async function AssetsPage() {
 
     if(user === null) return;
 
-    const AssetsResponse: AssetSuccess[] = await GetUserAssetAction(user?.id);
+    const AssetsResponse: AssetRecordType[] = await GetUserAssetAction(user?.id);
 
     return (
         <>

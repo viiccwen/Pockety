@@ -15,6 +15,59 @@ export const GetUserAssetAction = async (UserId: string | null) => {
     return asset;
 };
 
+export const GetAssetInfoAction = async (UserId: string | null, AssetId: number) => {
+
+    const asset = await db.asset.findFirst({
+        where: {
+            id: AssetId,
+            externalId: UserId as string,
+        }
+    });
+
+    if(!asset) {
+        return {
+            success: false,
+            message: "帳戶不存在或伺服器出現問題，請聯絡管理員...",
+        };
+    }
+
+    return {
+        success: true,
+        message: "成功取得帳戶資訊",
+        data: asset,
+    };
+}
+
+export const GetAssetCostAction = async (UserId: string | null, AssetId: number) => {
+    
+        const cost = await db.cost.findMany({
+            where: {
+                externalId: UserId as string,
+                assetId: AssetId,
+            },
+            orderBy: {
+                createdAt: "desc",
+            }
+        });
+        
+        return cost;
+}
+
+export const GetAssetIncomeAction = async (UserId: string | null, AssetId: number) => {
+        
+        const income = await db.income.findMany({
+            where: {
+                externalId: UserId as string,
+                assetId: AssetId,
+            },
+            orderBy: {
+                createdAt: "desc",
+            }
+        });
+        
+        return income;
+}
+
 type AddProps = {
     name: string;
     initial_value: number;

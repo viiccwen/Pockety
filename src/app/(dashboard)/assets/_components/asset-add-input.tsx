@@ -3,16 +3,14 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
   
-import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-import { SelectType } from "@/lib/type/enum-type";
+import { AssetMapType } from "@/lib/type";
 
 export const NameInput = () => {
     return (
@@ -24,8 +22,6 @@ export const NameInput = () => {
         </div>
     );
 };
-
-
 
 export const CategorySelect = () => {
     return (
@@ -41,7 +37,7 @@ export const CategorySelect = () => {
                 <SelectContent>
                     <SelectGroup>
                         {
-                            Array.from(SelectType).map(([key, value]) => (
+                            Array.from(AssetMapType).map(([key, value]) => (
                                 <SelectItem key={key} value={key}>{value}</SelectItem>
                             ))
                         }

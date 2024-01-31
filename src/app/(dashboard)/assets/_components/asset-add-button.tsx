@@ -14,7 +14,8 @@ import {
   
 import { Button } from "@/components/ui/button"
 
-import { AssetAddSchema } from "@/lib/type/schema-type";
+import { AssetAddSchema } from "@/lib/type";
+
 import { CreateUserAssetAction } from "@/server/action/asset-action";
 import { toast } from "sonner";
 import { CategorySelect, InitialValueInput, NameInput } from "./asset-add-input";
@@ -50,6 +51,8 @@ export const AssetAddButton = ({ userId, children } : ButtonProps) => {
         }
 
         setOpen(false);
+
+        {/* TODO: Change success to promise : loading... */}
         toast.success(res.message);
     };
 

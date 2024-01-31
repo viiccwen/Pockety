@@ -11,13 +11,14 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { AssetSuccess } from "@/lib/type/assets-type";
+import { AssetRecordType } from "@/lib/type";
+
 import { $Enums } from "@prisma/client";
 import { CandlestickChart, ChevronRight, CircleDollarSign, Coins, Landmark, Receipt } from "lucide-react";
 import Link from "next/link";
 
 interface AssetsPanelProps {
-    AssetsArray: AssetSuccess[];
+    AssetsArray: AssetRecordType[];
 };
 
 export const AssetsTable = ( { AssetsArray } : AssetsPanelProps ) => {
@@ -46,11 +47,21 @@ export const AssetsTable = ( { AssetsArray } : AssetsPanelProps ) => {
                         <TableRow key={index}>
                             <TableCell key={`${index}-${asset.name}`}>{asset.name}</TableCell>
                             <TableCell key={`${index}-${asset.category}`}>{Category(asset.category)}</TableCell>
-                            <TableCell key={`initial_value-${index}-${asset.initial_value}`}>{asset.initial_value}</TableCell>
-                            <TableCell key={`value-${index}-${asset.value}`}>{asset.value}</TableCell>
+                            <TableCell 
+                                key={`initial_value-${index}-${asset.initial_value}`} 
+                                className={asset.initial_value < 0 ? "text-red-500" : "text-green-600"}
+                            >
+                                {asset.initial_value}
+                            </TableCell>
+                            <TableCell 
+                                key={`value-${index}-${asset.value}`} 
+                                className={asset.value < 0 ? "text-red-500" : "text-green-600"}
+                            >
+                                {asset.value}
+                            </TableCell>
                             <TableCell key={`goto-${index}`}>
                                 <Button variant="ghost" asChild>
-                                    <Link href={`./assets/${index}`}>
+                                    <Link href={`assets/info/${asset.id}`}>
                                         <ChevronRight size={18} />
                                     </Link>
                                 </Button>
