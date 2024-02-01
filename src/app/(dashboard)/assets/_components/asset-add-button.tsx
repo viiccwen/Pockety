@@ -14,7 +14,7 @@ import {
   
 import { Button } from "@/components/ui/button"
 
-import { AssetAddSchema } from "@/lib/type";
+import { AssetAddSchema } from "@/lib/schema";
 
 import { CreateUserAssetAction } from "@/server/action/asset-action";
 import { toast } from "sonner";

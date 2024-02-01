@@ -1,14 +1,24 @@
 import { auth, currentUser } from "@clerk/nextjs";
+import { RecordAddButton } from "./_components/record-add-button";
+import { GetAssetCostAction, GetUserAssetAction } from "@/server/action/asset-action";
+import { AssetRecordType } from "@/lib/type";
+import { Toaster } from "sonner";
 
 export default async function HomePage() {
-    const { userId } : { userId: string | null } = await auth();
     const user = await currentUser();
 
+    if(!user) return;
+
+    const assets: AssetRecordType[] = await GetUserAssetAction(user.id);
+
     return (
-        <div className="ml-[400px]">
-            <h1>Dashboard</h1>
-            <p>{user?.username}</p>
-            <p>{userId}</p>
-        </div>
+        <>
+            <Toaster
+                richColors
+            />
+            <div className="ml-[400px]">
+                <RecordAddButton userId={user.id} assets={assets} />
+            </div>
+        </>
     );
 };

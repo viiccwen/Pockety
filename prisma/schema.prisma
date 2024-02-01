@@ -59,7 +59,7 @@ model Cost {
   asset         Asset    @relation(fields: [assetId], references: [id])
   assetId       Int
 
-  createdAt     DateTime @default(now())
+  createdAt     DateTime @default(now()) @db.Date
 }
 
 model Income {
@@ -75,7 +75,7 @@ model Income {
   asset         Asset    @relation(fields: [assetId], references: [id])
   assetId       Int
 
-  createdAt     DateTime @default(now())
+  createdAt     DateTime @default(now()) @db.Date
 }
 
 enum assetType {
