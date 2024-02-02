@@ -1,20 +1,21 @@
+import { Button } from "@/components/ui/button";
 import { AssetRecordType } from "@/lib/type";
-import { Props } from "next/script";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
-
-
-interface TotalPorps {
-    asset_table: AssetRecordType;
-}
-
-export const TotalPanel = ({ asset_table } : TotalPorps) => {
-
-
+export const TotalPanel = ({ asset_table } : {asset_table: AssetRecordType}) => {
     return (
         <div>
-            <div>
-                <h1 className="text-3xl font-bold">{asset_table.name}</h1>
-                <h1 className="text-lg  text-slate-500 dark:text-slate-200">帳戶資訊</h1>
+            <div className="flex gap-3">
+                <div>
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href="/assets"><ChevronLeft /></Link>
+                    </Button>
+                </div>
+                <div>
+                    <h1 className="text-3xl font-bold">{asset_table.name}</h1>
+                    <h1 className="text-lg  text-slate-500 dark:text-slate-200">帳戶資訊</h1>
+                </div>
             </div>
 
             <div className="my-[30px] flex space-x-5">

@@ -38,35 +38,8 @@ export const GetAssetInfoAction = async (UserId: string | null, AssetId: number)
     };
 }
 
-export const GetAssetCostAction = async (UserId: string | null, AssetId: number) => {
-    
-        const cost = await db.cost.findMany({
-            where: {
-                externalId: UserId as string,
-                assetId: AssetId,
-            },
-            orderBy: {
-                createdAt: "desc",
-            }
-        });
-        
-        return cost;
-}
 
-export const GetAssetIncomeAction = async (UserId: string | null, AssetId: number) => {
-        
-        const income = await db.income.findMany({
-            where: {
-                externalId: UserId as string,
-                assetId: AssetId,
-            },
-            orderBy: {
-                createdAt: "desc",
-            }
-        });
-        
-        return income;
-}
+
 
 type AddProps = {
     name: string;

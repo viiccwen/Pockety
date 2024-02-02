@@ -1,12 +1,14 @@
 import { currentUser } from "@clerk/nextjs";
 
 import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
-import { GetAssetCostAction, GetAssetIncomeAction, GetAssetInfoAction } from "@/server/action/asset-action";
+import { GetAssetInfoAction } from "@/server/action/asset-action";
 
 import { toast } from "sonner";
 import { InfoTable } from "./_components/info-table";
 import { TotalPanel } from "./_components/total-panel";
-import { assetType } from "@prisma/client";
+
+import { GetAssetCostAction } from "@/server/action/cost-action";
+import { GetAssetIncomeAction } from "@/server/action/income-action";
 
 
 export default async function AssetInfoPage({ params }: { params: { assetId: string}}) {

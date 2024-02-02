@@ -64,3 +64,37 @@ export const AddUserIncomeAction = async (UserId: string | null, data: AddIncome
         message: "新增成功",
     };
 };
+
+export const GetAssetIncomeAction = async (UserId: string | null, AssetId: number) => {
+        
+    const income = await db.income.findMany({
+        where: {
+            externalId: UserId as string,
+            assetId: AssetId,
+        },
+        orderBy: {
+            createdAt: "desc",
+        }
+    });
+    
+    return income;
+}
+
+
+export const GetMonthlyIncomeAction = async (UserId: string | null, year: number, month: number) => {
+
+    const income = await db.income.findMany({
+        where: {
+            user: {
+                externalId: UserId as string,
+            },
+            createdAt: {
+                gte: new Date(year, month - 1, 1),
+                lt: new Date(year, month, 1),
+            }
+        }
+    });
+
+
+    return income;
+}

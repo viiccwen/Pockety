@@ -1,12 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { SignInButton } from "@clerk/nextjs";
+import { SignInButton, currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Page() {
+  const user = await currentUser();
+  
+  if(user) redirect("/home");
+
   return (
     <>
-      <SignInButton afterSignInUrl="/home">
-          <Button>Sign in</Button>
-      </SignInButton>
+      <div className="h-screen flex items-center justify-center">
+        <SignInButton afterSignInUrl="/home">
+            <Button>Sign in</Button>
+        </SignInButton>
+      </div>
     </>
   );
 }

@@ -64,3 +64,36 @@ export const AddUserCostAction = async (UserId: string | null, data: AddCostProp
         message: "新增成功",
     };
 };
+
+export const GetAssetCostAction = async (UserId: string | null, AssetId: number) => {
+    
+    const cost = await db.cost.findMany({
+        where: {
+            externalId: UserId as string,
+            assetId: AssetId,
+        },
+        orderBy: {
+            createdAt: "desc",
+        }
+    });
+    
+    return cost;
+}
+
+export const GetMonthlyCostAction = async (UserId: string | null, year: number, month: number) => {
+
+    const cost = await db.cost.findMany({
+        where: {
+            user: {
+                externalId: UserId as string,
+            },
+            createdAt: {
+                gte: new Date(year, month - 1, 1),
+                lt: new Date(year, month, 1),
+            }
+        }
+    });
+
+
+    return cost;
+}

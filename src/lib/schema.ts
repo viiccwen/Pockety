@@ -7,7 +7,7 @@ export const AssetAddSchema = z.object({
     name: z.string(),
     initial_value: z.number(),
     value: z.number(),
-    category: z.enum(["CASH", "STOCKS", "BANK", "CHECK", "OTHER"]),
+    category: z.enum(["CASH", "STOCK", "BANK", "CHECK", "OTHER"]),
 });
 
 export const CostAddSchema = z.object({

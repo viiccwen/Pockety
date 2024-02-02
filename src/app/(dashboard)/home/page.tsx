@@ -1,6 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs";
 import { RecordAddButton } from "./_components/record-add-button";
-import { GetAssetCostAction, GetUserAssetAction } from "@/server/action/asset-action";
+import { GetUserAssetAction } from "@/server/action/asset-action";
 import { AssetRecordType } from "@/lib/type";
 import { Toaster } from "sonner";
 
