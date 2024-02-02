@@ -17,12 +17,8 @@ import { $Enums } from "@prisma/client";
 import { CandlestickChart, ChevronRight, CircleDollarSign, Coins, Landmark, Receipt } from "lucide-react";
 import Link from "next/link";
 
-interface AssetsPanelProps {
-    AssetsArray: AssetRecordType[];
-};
+export const List = ({ Assets } : { Assets: AssetRecordType[]}) => {
 
-export const AssetsTable = ( { AssetsArray } : AssetsPanelProps ) => {
-    
     const Category = (category: $Enums.assetType) => {
         if(category === "CASH") return <div className="flex"><CircleDollarSign size={18} className="mr-2" /> 現金</div>;
         if(category === "STOCK") return <div className="flex"><CandlestickChart size={18} className="mr-2" /> 股票</div>;
@@ -43,7 +39,7 @@ export const AssetsTable = ( { AssetsArray } : AssetsPanelProps ) => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {AssetsArray.map((asset, index) => (
+                    {Assets.map((asset, index) => (
                         <TableRow key={index}>
                             <TableCell key={`${index}-${asset.name}`}>{asset.name}</TableCell>
                             <TableCell key={`${index}-${asset.category}`}>{Category(asset.category)}</TableCell>
@@ -71,4 +67,4 @@ export const AssetsTable = ( { AssetsArray } : AssetsPanelProps ) => {
                 </TableBody>
         </Table>
     )
-};
+}

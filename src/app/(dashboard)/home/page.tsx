@@ -16,9 +16,7 @@ export default async function HomePage() {
             <Toaster
                 richColors
             />
-            <div className="ml-[400px]">
-                <RecordAddButton userId={user.id} assets={assets} />
-            </div>
+            <RecordAddButton userId={user.id} assets={assets} />
         </>
     );
 };

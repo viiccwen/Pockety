@@ -1,4 +1,4 @@
-import { LeftBar } from "@/components/left-bar";
+import { LeftBar } from "@/components/leftbar";
 import { Navbar } from "@/components/navbar";
 
 export default function DashboardLayout({
@@ -9,9 +9,11 @@ export default function DashboardLayout({
   return (
     <>
         <Navbar />
-        <div className="m-[100px]">
+        <div className="absolute mt-[150px] w-full">
             <LeftBar />
-            {children}
+            <div className="ml-[400px]">
+              {children}
+            </div>
         </div>
     </>
   );

@@ -28,11 +28,8 @@ const NavItem = [
 ]
 
 export const Navbar = () => {
-
-
-
     return (
-        <nav className="flex items-center h-[90px] p-5 bg-amber-300">
+        <nav className="w-full fixed flex items-center h-[60px] p-5 bg-amber-300">
             <div className="relative">
                 <Logo />
             </div>

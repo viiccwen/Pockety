@@ -1,36 +1,26 @@
-import { currentUser } from "@clerk/nextjs";
+import { Suspense } from "react";
 import { Toaster } from "sonner"
 
-import { AssetsTable } from "./_components/asset-table";
+import { AssetsList } from "./_components/asset-list";
 import { AssetsPanel } from "./_components/asset-panel";
-
-import { GetUserAssetAction } from "@/server/action/asset-action";
-import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
-import { GetMonthlyIncomeAction } from "@/server/action/income-action";
-import { GetMonthlyCostAction } from "@/server/action/cost-action";
-
-
-
+import { ListLoadingSkeleton, PanelLoadingSkeleton } from "./_components/asset-loading-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function AssetsPage() {
-    const user = await currentUser();
-
-    if(user === null) return;
-
-    const AssetsResponse: AssetRecordType[] = await GetUserAssetAction(user?.id);
-    const IncomeResponse: IncomeRecordType[] = await GetMonthlyIncomeAction(user?.id, (new Date()).getFullYear(), (new Date()).getMonth() + 1); 
-    const CostResponse: CostRecordType[] = await GetMonthlyCostAction(user?.id, (new Date()).getFullYear(), (new Date()).getMonth() + 1); 
-
     return (
         <>
             <Toaster 
                 richColors
             />
             
-            <div className="ml-[400px] space-y-[50px]">
+            <div className="space-y-[50px] mr-[100px]">
                 <h1 className="text-3xl font-bold">我的資產</h1>
-                <AssetsPanel userId={user.id} AssetsArray={AssetsResponse} incomesArray={IncomeResponse} costsArray={CostResponse} />
-                <AssetsTable AssetsArray={AssetsResponse} />
+                <Suspense fallback={<PanelLoadingSkeleton />}>
+                    <AssetsPanel />
+                </Suspense>
+                <Suspense fallback={<ListLoadingSkeleton />}>
+                    <AssetsList />
+                </Suspense>
             </div>
         </>
     );
