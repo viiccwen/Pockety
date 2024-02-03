@@ -1,7 +1,6 @@
 import { Loading } from "@/components/loading";
 
-
-export default function HomeLoadingPage() {
+export default function StatisticLoadingPage() {
     return (
         <Loading />
     )

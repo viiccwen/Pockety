@@ -1,9 +1,7 @@
-import { PageLoadingSkeleton } from "./_components/asset-loading-skeleton";
-
-
+import { Loading } from "@/components/loading";
 
 export default function AssetsLoadingPage() {
     return (
-        <PageLoadingSkeleton />
+        <Loading />
     )
 }

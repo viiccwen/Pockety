@@ -11,6 +11,6 @@ export const AssetsList = async () => {
     const Assets: AssetRecordType[] = await GetUserAssetAction(user?.id);
 
     return (
-        <List Assets={Assets} />
+        <List userId={user.id} Assets={Assets} />
     )
 };

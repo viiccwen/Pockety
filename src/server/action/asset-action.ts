@@ -95,3 +95,29 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
         message: "帳戶新增成功",
     }
 }
+
+export const DeleteUserAssetAction = async (UserId: string | null, assetId: number) => {
+    
+    const del = await db.asset.delete({
+        where: {
+            externalId: UserId as string,
+            id: assetId,
+        }
+    });
+
+    if(!del) {
+        return Promise.reject("帳戶刪除失敗，請聯絡管理員");
+        return {
+            success: false,
+            message: "帳戶新增失敗，請聯絡管理員",
+        }
+    }
+
+    revalidatePath("/assets");
+    
+    return Promise.resolve("帳戶刪除成功");
+    return {
+        success: true,
+        message: "帳戶新增成功",
+    }
+}

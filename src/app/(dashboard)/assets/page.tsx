@@ -7,6 +7,7 @@ import { ListLoadingSkeleton, PanelLoadingSkeleton } from "./_components/asset-l
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function AssetsPage() {
+
     return (
         <>
             <Toaster 

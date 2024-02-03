@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
     Table,
     TableBody,
@@ -14,10 +13,11 @@ import {
 import { AssetRecordType } from "@/lib/type";
 
 import { $Enums } from "@prisma/client";
-import { CandlestickChart, ChevronRight, CircleDollarSign, Coins, Landmark, Receipt } from "lucide-react";
-import Link from "next/link";
+import { CandlestickChart, CircleDollarSign, Coins, Landmark, Receipt } from "lucide-react";
 
-export const List = ({ Assets } : { Assets: AssetRecordType[]}) => {
+import { FuncMenu } from "./func-menu";
+
+export const List = ({ userId, Assets } : { userId: string, Assets: AssetRecordType[]}) => {
 
     const Category = (category: $Enums.assetType) => {
         if(category === "CASH") return <div className="flex"><CircleDollarSign size={18} className="mr-2" /> 現金</div>;
@@ -35,7 +35,7 @@ export const List = ({ Assets } : { Assets: AssetRecordType[]}) => {
                         <TableHead className="font-bold">類型</TableHead>
                         <TableHead className="font-bold">初始金額</TableHead>
                         <TableHead className="font-bold">總金額</TableHead>
-                        <TableHead className="font-bold">前往</TableHead>
+                        <TableHead className="font-bold">設定</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -56,11 +56,7 @@ export const List = ({ Assets } : { Assets: AssetRecordType[]}) => {
                                 {asset.value}
                             </TableCell>
                             <TableCell key={`goto-${index}`}>
-                                <Button variant="ghost" asChild>
-                                    <Link href={`assets/info/${asset.id}`}>
-                                        <ChevronRight size={18} />
-                                    </Link>
-                                </Button>
+                                <FuncMenu userId={userId} assetId={asset.id} />
                             </TableCell>
                         </TableRow>
                     ))}

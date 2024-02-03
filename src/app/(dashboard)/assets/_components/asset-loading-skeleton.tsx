@@ -2,12 +2,6 @@
 
 import { Skeleton } from "@/components/ui/skeleton"
 
-export const PageLoadingSkeleton = () => {
-    return (
-        <>loading...</>
-    );
-}
-
 export const PanelLoadingSkeleton = () => {
     return (
         <>
