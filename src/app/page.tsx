@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { SignInButton, SignUpButton, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { Navbar } from "./(platform)/_components/navbar";
-import { Footer } from "./(platform)/_components/footer";
 import { ArrowRightCircle, Link, Medal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";

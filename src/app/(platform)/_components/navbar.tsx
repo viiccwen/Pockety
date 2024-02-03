@@ -1,6 +1,5 @@
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { SignInButton } from "@clerk/nextjs"
 
 
