@@ -49,7 +49,7 @@ type AddProps = {
 };
 
 export const CreateUserAssetAction = async (UserId: string | null, data: AddProps) => {
-
+    
     const isNameExisted = await db.asset.findFirst({
         where: {
             name: data.name,
@@ -58,6 +58,7 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
     });
 
     if(isNameExisted) {
+        return Promise.reject("帳戶已存在，請更改名稱");
         return {
             success: false,
             message: "帳戶已存在，請更改名稱",
@@ -79,13 +80,16 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
     });
 
     if(!asset) {
+        return Promise.reject("帳戶新增失敗，請聯絡管理員");
         return {
             success: false,
             message: "帳戶新增失敗，請聯絡管理員",
         }
     }
-
+    
     revalidatePath("/assets");
+    
+    return Promise.resolve("帳戶新增成功");
     return {
         success: true,
         message: "帳戶新增成功",

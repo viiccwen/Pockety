@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button"
@@ -24,6 +24,8 @@ import { AddUserIncomeAction } from "@/server/action/income-action";
 export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], userId: string}) => {
     const [open, setOpen] = useState(false);
     const [type, setType] = useState<number>(1);
+    const [categoryError, setCategoryError] = useState<string>("");
+    const [assetError, setAssetError] = useState<string>("");
 
     const HandleSubmit = async (formdata: FormData) => {
 
@@ -45,6 +47,8 @@ export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], 
         }
         
         if(!check.success) {
+            if(check.error.flatten().fieldErrors.category) setCategoryError("請選擇類別！");
+            if(check.error.flatten().fieldErrors.assetId) setAssetError("請選擇資產！");
             console.log(check.error.flatten().fieldErrors);
             return;
         } else console.log(check.data);
@@ -80,6 +84,11 @@ export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], 
         setType(parseInt(e.currentTarget.value));
     }
 
+    useEffect(() => {
+        setCategoryError("");
+        setAssetError("");
+    }, [open])
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -107,8 +116,8 @@ export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], 
                                 <>
                                     <ValueInput />
                                     <DateInput />
-                                    <AssetsInput assets={assets} />
-                                    <CategorySelect isCost={type === 1} />
+                                    <AssetsInput assets={assets} error={assetError} />
+                                    <CategorySelect isCost={type === 1} error={categoryError} />
                                     <DescriptionInput />
                                 </>
                             }

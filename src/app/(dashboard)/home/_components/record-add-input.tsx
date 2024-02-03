@@ -12,11 +12,13 @@ import { Input } from "@/components/ui/input";
 
 import { AssetRecordType, CostMapType, IncomeMapType } from "@/lib/type";
 import { Textarea } from "@/components/ui/textarea";
+import { ErrorTooltip } from "@/components/error-tooltip";
 
-export const AssetsInput = ({ assets } : { assets: AssetRecordType[]}) => {
+export const AssetsInput = ({ assets, error } : { assets: AssetRecordType[], error: string}) => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-center">
+            <Label htmlFor="name" className="flex items-center justify-end gap-2">
+            <ErrorTooltip error={error} />
             資產
             </Label>
             
@@ -38,10 +40,11 @@ export const AssetsInput = ({ assets } : { assets: AssetRecordType[]}) => {
     );
 };
 
-export const CategorySelect = ({ isCost } : { isCost: boolean}) => {
+export const CategorySelect = ({ isCost, error } : { isCost: boolean, error: string}) => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="category" className="text-center">
+            <Label htmlFor="category" className="flex items-center justify-end gap-2">
+            <ErrorTooltip error={error} />
             類別
             </Label>
             
@@ -71,7 +74,7 @@ export const CategorySelect = ({ isCost } : { isCost: boolean}) => {
 export const ValueInput = () => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="value" className="text-center">
+            <Label htmlFor="value" className="text-end">
             金額
             </Label>
             <Input type="number" name="value" id="value" className="col-span-3" required/>
@@ -82,7 +85,7 @@ export const ValueInput = () => {
 export const DescriptionInput = () => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-center">
+            <Label htmlFor="description" className="text-end">
             備註
             </Label>
             <Textarea name="description" id="description" className="col-span-3" />
@@ -93,7 +96,7 @@ export const DescriptionInput = () => {
 export const DateInput = () => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="date" className="text-center">
+            <Label htmlFor="date" className="text-end">
             日期
             </Label>
             <Input type="date" name="date" id="date" className="col-span-3" required/>

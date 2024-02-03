@@ -5,28 +5,36 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
-  
+} from "@/components/ui/select"
+
+
+
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 import { AssetMapType } from "@/lib/type";
+import { XCircle } from "lucide-react";
+import { ErrorTooltip } from "@/components/error-tooltip";
 
 export const NameInput = () => {
     return (
-        <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-            名稱
-            </Label>
-            <Input id="name" name="name" className="col-span-3" required/>
-        </div>
+        <>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                名稱
+                </Label>
+                <Input id="name" name="name" className="col-span-3" required/>
+            </div>
+        </>
     );
 };
 
-export const CategorySelect = () => {
+export const CategorySelect = ({ error } : { error : string }) => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="category" className="text-right">
+            <Label htmlFor="category" className="flex items-center justify-end gap-2">
+            <ErrorTooltip error={error} />
             類別
             </Label>
             

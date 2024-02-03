@@ -1,14 +1,23 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider"
+import { siteConfig } from "@/lib/siteconfig";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Pockety",
-  description: "Pockety - A simple and easy to use personal finance management tool.",
+  applicationName: 'Pockety',
+  authors: [{name: 'VicWen'}],
+  title: {
+      default: `${siteConfig.name}`,
+      template: `%s - ${siteConfig.name}`,
+  },
+  description: `${siteConfig.description}`,
+  icons: {
+      icon: '/icon.png',
+  }
 };
 
 export default function RootLayout({
@@ -19,9 +28,6 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <head>
-          <link rel="icon" href="/icon.ico" type="image/ico" sizes="16x16" />
-        </head>
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"

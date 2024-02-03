@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     Dialog,
@@ -11,6 +11,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+
   
 import { Button } from "@/components/ui/button"
 
@@ -27,6 +28,7 @@ interface ButtonProps  {
 
 export const AssetAddButton = ({ userId, children } : ButtonProps) => {
     const [open, setOpen] = useState(false);
+    const [categoryError, setCategoryError] = useState<string>("");
 
     const HandleSubmit = async (formdata: FormData) => {
 
@@ -38,23 +40,34 @@ export const AssetAddButton = ({ userId, children } : ButtonProps) => {
 
         const check = AssetAddSchema.safeParse( data );
 
+        
         if(!check.success) {
-            console.log(check.error.flatten().fieldErrors);
+            const errorArray = check.error.flatten();
+            errorArray.fieldErrors.category ? setCategoryError("請選擇類別！") : null;
             return;
         } else console.log(check.data);
 
-        const res = await CreateUserAssetAction(userId, check.data);
-        
-        if(!res.success) {
-            toast.error(res.message);
-            return;
-        }
-
-        setOpen(false);
 
         {/* TODO: Change success to promise : loading... */}
-        toast.success(res.message);
+        {/* ISSUE: Solve the "Error: Error:" string */}
+        if(check.success) {
+
+            const pms = CreateUserAssetAction(userId, check.data);
+            // const pms = new Promise<a>((resolve, reject) => setTimeout(() => reject({message: "ok"}), 2000));
+
+            toast.promise(pms, {
+                loading: "新增中...",
+                success: (res) => `${res}`,
+                error: (err) => `${err}`,
+            });
+            
+            pms.then(() => setOpen(false));
+        }
     };
+
+    useEffect(() => {
+        setCategoryError("");
+    }, [open]);
 
     return (
         <>
@@ -72,11 +85,12 @@ export const AssetAddButton = ({ userId, children } : ButtonProps) => {
                     <form action={HandleSubmit}>
                         <div className="grid gap-4 py-4">
                             <NameInput />
-                            <CategorySelect />
+                            <CategorySelect error={categoryError} />
                             <InitialValueInput />
+                            
                         </div>
                         <DialogFooter>
-                            <Button type="submit">新增</Button>
+                                <Button type="submit">新增</Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>

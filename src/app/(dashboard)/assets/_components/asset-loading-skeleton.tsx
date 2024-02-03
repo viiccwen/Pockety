@@ -12,19 +12,16 @@ export const PanelLoadingSkeleton = () => {
     return (
         <>
             <div className="flex space-x-[50px] h-[150px]">
-                {/* text-red-500 text-green-600 */}
                 <div className="flex flex-col justify-center">
                     <Skeleton className="h-7 w-[100px]" />
                     <p>總資產</p>
                 </div>
 
-                {/* TODO: Implement debit */}
                 <div className="flex flex-col justify-center">
                     <Skeleton className="h-7 w-[100px]" />
                     <p>負債</p>
                 </div>
 
-                {/* TODO: Implement income and cost */}
                 <div className="flex flex-col justify-center">
                     <Skeleton className="h-7 w-[100px]" />
                     <p>本月收支</p>

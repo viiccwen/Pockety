@@ -54,7 +54,6 @@ export const Panel = ({
 
     return (
         <div className="flex space-x-[50px] h-[150px]">
-            {/* text-red-500 text-green-600 */}
             <div className="flex flex-col justify-center">
                 <div className={`text-xl ${
                     (typeof totalAssets === "string") ? 'text-black dark:text-white' : 
@@ -65,7 +64,6 @@ export const Panel = ({
                 <p>總資產</p>
             </div>
 
-            {/* TODO: Implement debit */}
             <div className="flex flex-col justify-center">
                 <div className={`text-xl ${
                     (typeof totalDebit === "string") ? 'text-black dark:text-white' : 
@@ -76,7 +74,6 @@ export const Panel = ({
                 <p>負債</p>
             </div>
 
-            {/* TODO: Implement income and cost */}
             <div className="flex flex-col justify-center">
                 <div className={`text-xl ${
                     (typeof totalIncomeCost === "string") ? 'text-black dark:text-white' : 

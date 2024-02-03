@@ -35,7 +35,7 @@ export const LeftBar = () => {
             <div className="flex flex-col space-y-5">
                 {LeftBarItem.map((item) => (
                     <>
-                    <Button key={item.name} variant="ghost">
+                    <Button key={item.name} variant="ghost" asChild>
                         <div className="flex items-center space-x-4">
                             {item.icon}
                             <Link href={item.link} className="text-base font-bold">{item.name}</Link>    
