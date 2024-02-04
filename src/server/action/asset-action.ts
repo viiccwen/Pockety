@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { assetType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
+// GET
+
 export const GetUserAssetAction = async (UserId: string | null) => {
     
     const asset = await db.asset.findMany({
@@ -39,7 +41,7 @@ export const GetAssetInfoAction = async (UserId: string | null, AssetId: number)
 }
 
 
-
+// CREATE
 
 type AddProps = {
     name: string;
@@ -96,6 +98,8 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
     }
 }
 
+// DELETE
+
 export const DeleteUserAssetAction = async (UserId: string | null, assetId: number) => {
     
     const del = await db.asset.delete({
@@ -116,6 +120,40 @@ export const DeleteUserAssetAction = async (UserId: string | null, assetId: numb
     revalidatePath("/assets");
     
     return Promise.resolve("帳戶刪除成功");
+    return {
+        success: true,
+        message: "帳戶新增成功",
+    }
+}
+
+// UPDATE
+
+export const UpdateUserAssetAction = async (UserId: string | null, assetId: number, data: AddProps) => {
+    
+    const update = await db.asset.update({
+        where: {
+            id: assetId,
+            externalId: UserId as string,
+        },
+        data: {
+            name: data.name,
+            initial_value: data.initial_value,
+            value: data.value,
+            category: data.category as assetType,
+        }
+    });
+
+    if(!update) {
+        return Promise.reject("帳戶編輯失敗，請聯絡管理員");
+        return {
+            success: false,
+            message: "帳戶新增失敗，請聯絡管理員",
+        }
+    }
+
+    revalidatePath("/assets");
+    
+    return Promise.resolve("帳戶編輯成功");
     return {
         success: true,
         message: "帳戶新增成功",

@@ -56,7 +56,7 @@ export const List = ({ userId, Assets } : { userId: string, Assets: AssetRecordT
                                 {asset.value}
                             </TableCell>
                             <TableCell key={`goto-${index}`}>
-                                <FuncMenu userId={userId} assetId={asset.id} />
+                                <FuncMenu userId={userId} asset={asset} />
                             </TableCell>
                         </TableRow>
                     ))}

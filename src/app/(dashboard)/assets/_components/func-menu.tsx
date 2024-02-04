@@ -21,43 +21,95 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
-import { useState } from "react";
-
-import { useRouter } from "next/navigation";
-import { DeleteUserAssetAction } from "@/server/action/asset-action";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
+import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react"
 
+import { useRouter } from "next/navigation";
+import { CreateUserAssetAction, DeleteUserAssetAction, UpdateUserAssetAction } from "@/server/action/asset-action";
+import { EditCategorySelect, EditInitialValueInput, EditNameInput } from "./func-item";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { AssetAddSchema } from "@/lib/schema";
+import { AssetRecordType } from "@/lib/type";
 
-export const FuncMenu = async ({ userId, assetId } : {userId: string, assetId: number}) => {
+interface FuncMenuProps  {
+    userId: string;
+    asset: AssetRecordType;
+}
+
+export const FuncMenu = async ({ 
+    userId, 
+    asset 
+} : FuncMenuProps) => {
+
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
+    const [categoryError, setCategoryError] = useState<string>("");
 
     const HandleView = () => {
-        router.push(`/assets/info/${assetId}`);
+        router.push(`/assets/info/${asset.id}`);
     }
 
     const HandleDelete = async () => {
-        const pms = DeleteUserAssetAction(userId, assetId);
+        const pms = DeleteUserAssetAction(userId, asset.id);
 
         toast.promise(pms, {
             loading: "新增中...",
             success: (res) => `${res}`,
             error: (err) => `${err}`,
         });
-        
-        pms.then(() => setIsOpen(false));
     };
 
-    const HandleEdit = () => {
+    const HandleEdit = async (formdata: FormData) => {
+        const category = formdata.get("category");
+        const name = formdata.get("name");
+        const initial_value = parseInt(formdata.get("initial-value") as string);
+        const value = initial_value;
+        const data = { category, name, initial_value, value };
 
+        const check = AssetAddSchema.safeParse( data );
+
+        
+        if(!check.success) {
+            const errorArray = check.error.flatten();
+            errorArray.fieldErrors.category ? setCategoryError("請選擇類別！") : null;
+            return;
+        } else console.log(check.data);
+
+
+        {/* TODO: Change success to promise : loading... */}
+        {/* ISSUE: Solve the "Error: Error:" string */}
+        if(check.success) {
+
+            const pms = UpdateUserAssetAction(userId, asset.id, check.data);
+            // const pms = new Promise<a>((resolve, reject) => setTimeout(() => reject({message: "ok"}), 2000));
+
+            toast.promise(pms, {
+                loading: "新增中...",
+                success: (res) => `${res}`,
+                error: (err) => `${err}`,
+            });
+            
+            // pms.then(() => setOpen(false));
+        }
     }
     
     return (
         <>
-            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+            <AlertDialog>
+                <Dialog>
                 
                 <DropdownMenu>
                     <DropdownMenuTrigger><MoreHorizontal /></DropdownMenuTrigger>
@@ -69,7 +121,7 @@ export const FuncMenu = async ({ userId, assetId } : {userId: string, assetId: n
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <Pencil size={18} className="mr-2" />
-                            編輯
+                            <DialogTrigger>編輯</DialogTrigger>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <Trash size={18} className="mr-2" />
@@ -77,6 +129,24 @@ export const FuncMenu = async ({ userId, assetId } : {userId: string, assetId: n
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+
+                <DialogContent>
+                    <DialogHeader>
+                    <DialogTitle>資產編輯</DialogTitle>
+
+                    <form action={HandleEdit}>
+                        <div className="grid gap-4 py-4">
+                            <EditNameInput name={asset.name} />
+                            <EditCategorySelect error={categoryError} selected={asset.category} />
+                            <EditInitialValueInput value={asset.initial_value} />
+                        </div>
+                        <DialogFooter>
+                                <Button type="submit">編輯</Button>
+                        </DialogFooter>
+                    </form>
+
+                    </DialogHeader>
+                </DialogContent>
                 
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -91,6 +161,7 @@ export const FuncMenu = async ({ userId, assetId } : {userId: string, assetId: n
                     </AlertDialogFooter>
                 </AlertDialogContent>
 
+                </Dialog>
             </AlertDialog>
         </>
     );

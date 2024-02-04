@@ -82,6 +82,8 @@ export const GetAssetIncomeAction = async (UserId: string | null, AssetId: numbe
 
 
 export const GetMonthlyIncomeAction = async (UserId: string | null, year: number, month: number) => {
+    const startDate = new Date(Date.UTC(year, month - 1, 1));
+    const endDate = new Date(Date.UTC(year, month, 1));
 
     const income = await db.income.findMany({
         where: {
@@ -89,8 +91,8 @@ export const GetMonthlyIncomeAction = async (UserId: string | null, year: number
                 externalId: UserId as string,
             },
             createdAt: {
-                gte: new Date(year, month - 1, 1),
-                lt: new Date(year, month, 1),
+                gte: startDate,
+                lt: endDate,
             }
         }
     });
