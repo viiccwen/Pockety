@@ -14,15 +14,30 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { AssetRecordType } from "@/lib/type";
+import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
 import { AssetsInput, CategorySelect, DateInput, DescriptionInput, ValueInput } from "./record-add-input";
 import { CostAddSchema, IncomeAddSchema } from "@/lib/schema";
-import { AddUserCostAction } from "@/server/action/cost-action";
-import { AddUserIncomeAction } from "@/server/action/income-action";
+import { AddUserCostAction, GetMonthlyCostAction } from "@/server/action/cost-action";
+import { AddUserIncomeAction, GetMonthlyIncomeAction } from "@/server/action/income-action";
 
+interface RecordAddActionProps {
+    assets: AssetRecordType[];
+    userId: string;
+    isOpen: boolean;
+    curDate: Date;
+    setIsOpen: (open: boolean) => void;
+    setRefresh: (refresh: boolean) => void;
+};
 
-export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], userId: string}) => {
-    const [open, setOpen] = useState(false);
+export const RecordAddAction = ({ 
+    assets, 
+    userId,
+    curDate,
+    isOpen, 
+    setIsOpen,
+    setRefresh
+}: RecordAddActionProps) => {
+    
     const [type, setType] = useState<number>(1);
     const [categoryError, setCategoryError] = useState<string>("");
     const [assetError, setAssetError] = useState<string>("");
@@ -74,10 +89,13 @@ export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], 
             return;
         }
 
-        setOpen(false);
+        setIsOpen(false);
 
         {/* TODO: Change success to promise : loading... */}
         toast.success(res.message);
+
+        // let my data update!!!
+        setRefresh(true);
     };
 
     const HandleTypeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,11 +109,11 @@ export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], 
 
     return (
         <>
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
 
-                <DialogTrigger asChild>
+                {/* <DialogTrigger asChild>
                     <Button>新增</Button>
-                </DialogTrigger>
+                </DialogTrigger> */}
 
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
@@ -115,7 +133,7 @@ export const RecordAddButton = ({ assets, userId }: {assets: AssetRecordType[], 
                             :
                                 <>
                                     <ValueInput />
-                                    <DateInput />
+                                    <DateInput curDate={curDate} />
                                     <AssetsInput assets={assets} error={assetError} />
                                     <CategorySelect isCost={type === 1} error={categoryError} />
                                     <DescriptionInput />

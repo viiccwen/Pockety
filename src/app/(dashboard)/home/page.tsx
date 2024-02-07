@@ -1,5 +1,4 @@
 import { currentUser } from "@clerk/nextjs";
-import { RecordAddButton } from "./_components/record-add-button";
 import { AssetRecordType } from "@/lib/type";
 import { Toaster } from "sonner";
 import { Calendar } from './_components/calendar';
@@ -27,9 +26,8 @@ export default async function HomePage() {
                 richColors
             />
             <div className="grid grid-cols-2 gap-6">
-                <Calendar userId={user.id} cost={monthlyCost} income={monthlyIncome} />
+                <Calendar id={user.id} cost={monthlyCost} income={monthlyIncome} />
             </div>
-            <RecordAddButton userId={user.id} assets={assets} />
         </>
     );
 };

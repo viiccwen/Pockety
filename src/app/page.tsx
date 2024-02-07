@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { SignInButton, SignUpButton, currentUser } from "@clerk/nextjs";
+import { SignUpButton, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { Navbar } from "./(platform)/_components/navbar";
-import { ArrowRightCircle, Link, Medal } from "lucide-react";
+import { ArrowRightCircle, Medal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ModeToggle } from "@/components/mode-toggle";
 
 export default async function Page() {
   const user = await currentUser();
@@ -17,7 +16,7 @@ export default async function Page() {
       <Navbar />
       <div className="flex h-screen items-center justify-center flex-col">
           <div className="flex items-center justify-center flex-col">
-
+            
             <div className="mb-3 rounded-2xl bg-white hover:opacity-75 transition items-center gap-x-2 md:flex">
               <Image
                   src="/logo.png" 

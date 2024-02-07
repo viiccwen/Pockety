@@ -93,13 +93,20 @@ export const DescriptionInput = () => {
     )
 }
 
-export const DateInput = () => {
+export const DateInput = ({ curDate } : { curDate : Date }) => {
+    const formateDate = (date: Date) => {
+        const year = date.getFullYear().toString();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = (date.getDate()).toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    } 
+
     return (
         <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="date" className="text-end">
             日期
             </Label>
-            <Input type="date" name="date" id="date" className="col-span-3" required/>
+            <Input type="date" name="date" id="date" defaultValue={formateDate(curDate)} className="col-span-3" required/>
         </div>
     )
 }
