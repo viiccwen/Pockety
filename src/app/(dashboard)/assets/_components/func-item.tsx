@@ -66,7 +66,7 @@ export const EditInitialValueInput = ({ value } : { value : number }) => {
             <Label htmlFor="initial-value" className="text-right">
             初始金額
             </Label>
-            <Input type="number" name="initial-value" id="initial-value" className="col-span-3" value={value} required/>
+            <Input type="number" name="initial-value" id="initial-value" className="col-span-3" defaultValue={value} required/>
         </div>
     )
 }

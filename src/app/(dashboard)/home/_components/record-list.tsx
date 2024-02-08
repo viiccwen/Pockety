@@ -27,7 +27,7 @@ export const RecordList = ({
                     {/* TODO: link and info */}
                     return (
                         <Link key={record.id} href="#" className="duration-200 hover:opacity-75">
-                            <div  className="mb-3 p-2 grid grid-cols-2 grid-rows-2 font-bold bg-yellow-400 rounded-lg">
+                            <div  className="mb-3 p-2 grid grid-cols-2 grid-rows-2 font-bold bg-yellow-400 rounded-lg dark:text-black">
                                 <p className="flex items-center">{CostMapType.get(record.category)}</p>
                                 <div className="flex justify-end">
                                     <div className="p-1 rounded-lg text-white bg-red-400">{record.value}</div>
@@ -47,7 +47,7 @@ export const RecordList = ({
                     {/* TODO: link and info */}
                     return (
                         <Link key={record.id} href="#" className="duration-200 hover:opacity-75">
-                            <div className="mb-3 p-2 grid grid-cols-2 grid-rows-2 font-bold bg-yellow-400 rounded-lg">
+                            <div className="mb-3 p-2 grid grid-cols-2 grid-rows-2 font-bold bg-yellow-400 rounded-lg dark:text-black">
                                 <p className="flex items-center">{IncomeMapType.get(record.category)}</p>                    
                                 <div className="flex justify-end">
                                     <div className="p-1 rounded-lg text-white bg-green-400">{record.value}</div>

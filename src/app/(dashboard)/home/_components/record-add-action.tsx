@@ -91,6 +91,20 @@ export const RecordAddAction = ({
 
         setIsOpen(false);
 
+        // if(check.success) {
+
+        //     const pms = CreateUserAssetAction(userId, check.data);
+        //     // const pms = new Promise<a>((resolve, reject) => setTimeout(() => reject({message: "ok"}), 2000));
+
+        //     toast.promise(pms, {
+        //         loading: "新增中...",
+        //         success: (res) => `${res}`,
+        //         error: (err) => `${err}`,
+        //     });
+            
+        //     pms.then(() => setOpen(false));
+        // }
+
         {/* TODO: Change success to promise : loading... */}
         toast.success(res.message);
 

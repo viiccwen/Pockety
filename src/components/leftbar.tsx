@@ -27,21 +27,23 @@ const LeftBarItem = [
     }
 ]
 
-export const LeftBar = () => {
+export const LeftBar = ({ active } : { active: string }) => {
 
     return (
         <div className="absolute left-[100px]">
             <p className=" font-bold text-3xl mb-5">清單</p>
             <div className="flex flex-col space-y-5">
                 {LeftBarItem.map((item) => (
-                    <>
                     <Button key={item.name} variant="ghost" asChild>
-                        <div className="flex items-center space-x-4">
+                        <div className={`flex items-center space-x-4 hover:text-amber-500 ${active == item.link ? 'text-amber-500' : null}`}>
                             {item.icon}
-                            <Link href={item.link} className="text-base font-bold">{item.name}</Link>    
+                            <Link 
+                                href={item.link} 
+                                className={`text-base font-bold ${active == item.link ? 'text-amber-500' : null}`}>
+                                    {item.name}
+                            </Link>    
                         </div>
                     </Button>
-                    </>
                 ))}
             </div>
         </div>

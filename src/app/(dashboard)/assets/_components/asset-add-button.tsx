@@ -51,17 +51,14 @@ export const AssetAddButton = ({ userId, children } : ButtonProps) => {
         {/* TODO: Change success to promise : loading... */}
         {/* ISSUE: Solve the "Error: Error:" string */}
         if(check.success) {
-
             const pms = CreateUserAssetAction(userId, check.data);
-            // const pms = new Promise<a>((resolve, reject) => setTimeout(() => reject({message: "ok"}), 2000));
-
             toast.promise(pms, {
                 loading: "新增中...",
-                success: (res) => `${res}`,
+                success: (res) => res as string,
                 error: (err) => `${err}`,
             });
             
-            pms.then(() => setOpen(false));
+            // pms.then(() => setOpen(false));
         }
     };
 

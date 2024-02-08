@@ -34,7 +34,7 @@ export default async function AssetInfoPage({ params }: { params: { assetId: str
     
     return (
         <>
-            <div className="ml-[400px]">
+            <div>
                 {/* TODO: Implement cost and income list with date (need to merge) */}
                 <TotalPanel asset_table={asset_data} />
                 <InfoTable costs={costs} incomes={incomes} />

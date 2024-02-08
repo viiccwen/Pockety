@@ -60,13 +60,11 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
     });
 
     if(isNameExisted) {
-        return Promise.reject("帳戶已存在，請更改名稱");
-        return {
-            success: false,
-            message: "帳戶已存在，請更改名稱",
-        }
+        return Promise.reject("Account already exists, please change the name.");
     }
-
+    
+    // return Promise.reject("帳戶已存在，請更改名稱");
+    
     const asset = await db.asset.create({
         data: {
             name: data.name,
@@ -83,47 +81,45 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
 
     if(!asset) {
         return Promise.reject("帳戶新增失敗，請聯絡管理員");
-        return {
-            success: false,
-            message: "帳戶新增失敗，請聯絡管理員",
-        }
     }
     
     revalidatePath("/assets");
     
     return Promise.resolve("帳戶新增成功");
-    return {
-        success: true,
-        message: "帳戶新增成功",
-    }
 }
 
 // DELETE
 
 export const DeleteUserAssetAction = async (UserId: string | null, assetId: number) => {
     
-    const del = await db.asset.delete({
+    // delete existed cost
+    const delCost = await db.cost.deleteMany({
+        where: {
+            assetId: assetId,
+        }
+    });
+
+    // delete existed income
+    const delIncome = await db.income.deleteMany({
+        where: {
+            assetId: assetId,
+        }
+    });
+
+    const delAsset = await db.asset.delete({
         where: {
             externalId: UserId as string,
             id: assetId,
         }
     });
 
-    if(!del) {
+    if(!delAsset) {
         return Promise.reject("帳戶刪除失敗，請聯絡管理員");
-        return {
-            success: false,
-            message: "帳戶新增失敗，請聯絡管理員",
-        }
     }
 
     revalidatePath("/assets");
     
     return Promise.resolve("帳戶刪除成功");
-    return {
-        success: true,
-        message: "帳戶新增成功",
-    }
 }
 
 // UPDATE
@@ -145,17 +141,9 @@ export const UpdateUserAssetAction = async (UserId: string | null, assetId: numb
 
     if(!update) {
         return Promise.reject("帳戶編輯失敗，請聯絡管理員");
-        return {
-            success: false,
-            message: "帳戶新增失敗，請聯絡管理員",
-        }
     }
 
     revalidatePath("/assets");
     
     return Promise.resolve("帳戶編輯成功");
-    return {
-        success: true,
-        message: "帳戶新增成功",
-    }
 }

@@ -38,7 +38,7 @@ import { toast } from "sonner";
 import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react"
 
 import { useRouter } from "next/navigation";
-import { CreateUserAssetAction, DeleteUserAssetAction, UpdateUserAssetAction } from "@/server/action/asset-action";
+import { CreateUserAssetAction, DeleteUserAssetAction, GetUserAssetAction, UpdateUserAssetAction } from "@/server/action/asset-action";
 import { EditCategorySelect, EditInitialValueInput, EditNameInput } from "./func-item";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -57,17 +57,19 @@ export const FuncMenu = async ({
 
     const router = useRouter();
     const [categoryError, setCategoryError] = useState<string>("");
+    const [open, setOpen] = useState(false);
 
     const HandleView = () => {
         router.push(`/assets/info/${asset.id}`);
     }
 
     const HandleDelete = async () => {
+        
         const pms = DeleteUserAssetAction(userId, asset.id);
 
         toast.promise(pms, {
-            loading: "新增中...",
-            success: (res) => `${res}`,
+            loading: "刪除中...",
+            success: (res) => res as string,
             error: (err) => `${err}`,
         });
     };
@@ -76,7 +78,8 @@ export const FuncMenu = async ({
         const category = formdata.get("category");
         const name = formdata.get("name");
         const initial_value = parseInt(formdata.get("initial-value") as string);
-        const value = initial_value;
+
+        const value = asset.value + (initial_value - asset.initial_value);
         const data = { category, name, initial_value, value };
 
         const check = AssetAddSchema.safeParse( data );
@@ -89,27 +92,24 @@ export const FuncMenu = async ({
         } else console.log(check.data);
 
 
-        {/* TODO: Change success to promise : loading... */}
         {/* ISSUE: Solve the "Error: Error:" string */}
         if(check.success) {
-
             const pms = UpdateUserAssetAction(userId, asset.id, check.data);
-            // const pms = new Promise<a>((resolve, reject) => setTimeout(() => reject({message: "ok"}), 2000));
-
+            
             toast.promise(pms, {
                 loading: "新增中...",
                 success: (res) => `${res}`,
                 error: (err) => `${err}`,
             });
             
-            // pms.then(() => setOpen(false));
+            pms.then(() => setOpen(false));
         }
     }
     
     return (
         <>
             <AlertDialog>
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                 
                 <DropdownMenu>
                     <DropdownMenuTrigger><MoreHorizontal /></DropdownMenuTrigger>
@@ -152,7 +152,7 @@ export const FuncMenu = async ({
                     <AlertDialogHeader>
                         <AlertDialogTitle>你確定要刪除嗎？</AlertDialogTitle>
                         <AlertDialogDescription>
-                            刪除的動作便無法復原，請謹慎操作。
+                            刪除的動作便無法復原，並且會刪除所有連接該筆資產的紀錄，請謹慎操作。
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

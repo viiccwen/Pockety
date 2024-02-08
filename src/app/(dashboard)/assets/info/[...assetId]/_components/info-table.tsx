@@ -27,7 +27,7 @@ export const InfoTable = ({ costs, incomes } : InfoProps) => {
         <>
             {infoArray.map((record, index) => (
                 <div key={index} className="grid grid-cols-7 gap-3 p-5 items-center">
-                    <div>
+                    <div className="col-start-2">
                         <div className="flex">
                             <p className={`p-1 rounded-lg text-white ${CostMapType.has(record.category) ? 'bg-red-500' : 'bg-green-400'}`}>{record.value}</p>
                         </div>
