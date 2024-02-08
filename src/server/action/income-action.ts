@@ -34,10 +34,7 @@ export const AddUserIncomeAction = async (UserId: string | null, data: AddIncome
     })
 
     if(!income) {
-        return {
-            success: false,
-            message: "新增失敗，請聯絡管理員",
-        }
+        return Promise.reject("新增失敗，請聯絡管理員");
     }
 
     const update = await db.asset.update({
@@ -52,17 +49,11 @@ export const AddUserIncomeAction = async (UserId: string | null, data: AddIncome
     });
 
     if(!update) {
-        return {
-            success: false,
-            message: "新增失敗，請聯絡管理員",
-        }
+        return Promise.reject("新增失敗，請聯絡管理員");
     }
     
     revalidatePath("/home");
-    return {
-        success: true,
-        message: "新增成功",
-    };
+    return Promise.resolve("新增成功");
 };
 
 export const GetAssetIncomeAction = async (UserId: string | null, AssetId: number) => {

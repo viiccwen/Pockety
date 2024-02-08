@@ -73,40 +73,24 @@ export const RecordAddAction = ({
             message: string;
         };
 
-        let res: ActionResult;
+        let pms: Promise<string>;
 
         if(type === 1) {
-            res = await AddUserCostAction(userId, check.data);
+            pms = AddUserCostAction(userId, check.data);
         } else if(type === 2) {
-            res = await AddUserIncomeAction(userId, check.data);
+            pms = AddUserIncomeAction(userId, check.data);
         } else {
             {/* TODO: Implement transfer mode */}
-            res = await AddUserCostAction(userId, check.data);
+            pms = AddUserCostAction(userId, check.data);
         }
+
+        toast.promise(pms, {
+            loading: "新增中...",
+            success: (res) => `${res}`,
+            error: (err) => `${err}`,
+        });
         
-        if(!res.success) {
-            toast.error(res.message);
-            return;
-        }
-
-        setIsOpen(false);
-
-        // if(check.success) {
-
-        //     const pms = CreateUserAssetAction(userId, check.data);
-        //     // const pms = new Promise<a>((resolve, reject) => setTimeout(() => reject({message: "ok"}), 2000));
-
-        //     toast.promise(pms, {
-        //         loading: "新增中...",
-        //         success: (res) => `${res}`,
-        //         error: (err) => `${err}`,
-        //     });
-            
-        //     pms.then(() => setOpen(false));
-        // }
-
-        {/* TODO: Change success to promise : loading... */}
-        toast.success(res.message);
+        pms.then(() => setIsOpen(false));
 
         // let my data update!!!
         setRefresh(true);

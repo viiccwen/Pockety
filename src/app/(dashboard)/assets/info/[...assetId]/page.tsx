@@ -36,7 +36,7 @@ export default async function AssetInfoPage({ params }: { params: { assetId: str
         <>
             <div>
                 {/* TODO: Implement cost and income list with date (need to merge) */}
-                <TotalPanel asset_table={asset_data} />
+                <TotalPanel asset_table={asset_data} costs={costs} incomes={incomes} />
                 <InfoTable costs={costs} incomes={incomes} />
             </div>
         </>

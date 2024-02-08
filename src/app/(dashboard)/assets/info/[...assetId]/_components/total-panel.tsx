@@ -1,9 +1,35 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
-import { AssetRecordType } from "@/lib/type";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export const TotalPanel = ({ asset_table } : {asset_table: AssetRecordType}) => {
+import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
+import { GetMonthlyTotal } from "@/lib/calculating";
+
+
+interface TotalPanelProps {
+    asset_table: AssetRecordType;
+    costs: CostRecordType[];
+    incomes: IncomeRecordType[];
+}
+
+export const TotalPanel = ({ 
+    asset_table,
+    costs,
+    incomes,
+} : TotalPanelProps) => {
+    const [curMonthlyTotal, setCurMonthlyTotal] = useState<number> (0);
+
+    useEffect(() => {
+        const year = (new Date()).getFullYear();
+        const month = (new Date()).getMonth() + 1;
+        const total = GetMonthlyTotal(month, year, costs, incomes);
+        
+        setCurMonthlyTotal(total);
+    }, [costs, incomes])
+
     return (
         <div>
             <div className="grid grid-cols-4 gap-3 justify-center">
@@ -28,7 +54,7 @@ export const TotalPanel = ({ asset_table } : {asset_table: AssetRecordType}) => 
                     <h1>初始餘額</h1>
                 </div>
                 <div className="flex flex-col ">
-                    <h1  className={`font-bold text-2xl ${asset_table.value >= 0 ? ' text-green-500' : ' text-red-400'}`}>0</h1>
+                    <h1  className={`font-bold text-2xl ${curMonthlyTotal >= 0 ? ' text-green-500' : ' text-red-400'}`}>{curMonthlyTotal}</h1>
                     <h1>本月收支</h1>
                 </div>
             </div>
