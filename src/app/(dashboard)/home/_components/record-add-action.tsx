@@ -103,7 +103,7 @@ export const RecordAddAction = ({
     useEffect(() => {
         setCategoryError("");
         setAssetError("");
-    }, [open])
+    }, [isOpen])
 
     return (
         <>

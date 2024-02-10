@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ✒️Overview
+Pockety is a full-stack Accounting Application that you can keep your cash flow. Easily record financial status and track monthly income and expenditure situation.
 
-## Getting Started
+## 👀live demo: https://pockety.vercel.app
 
-First, run the development server:
+deployed on vercel (front-end) and vercel posgresDB (back-end)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# 🛠️Tools
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* NextJS 14 - Framework
+* TypeScript - Language
+* Shadcn/ui - UI Package
+* Lucide - Icon Package
+* Clerk - User Authentication
+* Vercel - deployment platform
+* Vercel PostgresDB - Database
+* Prisma - ORM
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# 🈵Development Process
+- Processing...
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# 🚩Updated Log
+- 2024/01/01 - 2024/01/25 - 主題構思, 選擇工具, 選擇db, 思考架構
+- 2024/01/31 - 製作logo, 設定環境, 完成導覽列, 側邊攔, 主頁架構, 資產頁面 1/5, 資產新增功能
+- 2024/02/01 - 資產頁面, 資產收支詳情, 收支新增功能
+- 2024/02/02 - 納入負債, 收入計算
+- 2024/02/03 - 首頁, 加入載入UI, 錯誤訊息通知, toast 載入條, 資產設定（查看, 刪除）
+- 2024/02/04 - 資產設定（編輯）
+- 2024/02/07 - 首頁日曆, 紀錄列表
