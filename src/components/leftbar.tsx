@@ -38,12 +38,12 @@ const LeftBarItem = [
         child: [
             {
                 name: "支出",
-                link: "/statistics?type=cost",
+                link: "/statistics?type=cost&method=month",
                 icon: <CircleDollarSign size={17} />,
             },
             {
                 name: "收入",
-                link: "/statistics?type=income",
+                link: "/statistics?type=income&method=month",
                 icon: <HandCoins size={17} />,
             }
         ]
@@ -66,10 +66,10 @@ export const LeftBar = ({ active } : { active: string }) => {
                 {LeftBarItem.map((item) => (
                     item.child 
                     ? 
-                    <>
+                    <div key={item.name}>
                         <DropdownMenu>
                             <DropdownMenuTrigger>
-                                <Button key={item.name} variant="ghost" asChild>
+                                <Button variant="ghost" asChild>
                                     <div className={`flex items-center space-x-4 hover:text-amber-500 ${active == item.link ? 'text-amber-500' : null}`}>
                                         {item.icon}
                                         <Link 
@@ -96,10 +96,10 @@ export const LeftBar = ({ active } : { active: string }) => {
                                 ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
-                    </> 
+                    </div> 
                     : 
-                    <>
-                        <Button key={item.name} variant="ghost" asChild>
+                    <div key={item.name}>
+                        <Button variant="ghost" asChild>
                             <div className={`flex items-center space-x-4 hover:text-amber-500 ${active == item.link ? 'text-amber-500' : null}`}>
                                 {item.icon}
                                 <Link 
@@ -109,7 +109,7 @@ export const LeftBar = ({ active } : { active: string }) => {
                                 </Link>    
                             </div>
                         </Button>
-                    </>
+                    </div>
                 ))}
             </div>
         </div>

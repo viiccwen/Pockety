@@ -90,3 +90,22 @@ export const GetMonthlyCostAction = async (UserId: string | null, year: number, 
 
     return cost;
 }
+
+export const GetYearlyCostAction = async (UserId: string | null, year: number) => {
+    const startDate = new Date(Date.UTC(year, 0, 1));
+    const endDate = new Date(Date.UTC(year, 12, 1));
+
+    const cost = await db.cost.findMany({
+        where: {
+            user: {
+                externalId: UserId as string,
+            },
+            createdAt: {
+                gte: startDate,
+                lt: endDate,
+            }
+        }
+    });
+
+    return cost;
+}
