@@ -56,29 +56,16 @@ export const AddUserIncomeAction = async (UserId: string | null, data: AddIncome
     return Promise.resolve("新增成功");
 };
 
-export const UpsertUserIncomeAction = async (UserId: string | null, recordId: number, data: AddIncomeProps) => {
-    const upsert = await db.income.upsert({
+export const UpdateUserIncomeAction = async (UserId: string | null, recordId: number, data: AddIncomeProps) => {
+    const upsert = await db.income.update({
         where: {
             id: recordId,
+            externalId: UserId as string,
         },
-        update: {
-            value: data.value,
-            createdAt: data.createdAt,
-            asset: {
-                connect: {
-                    id: data.assetId,
-                }
+        data: {
+            value: {
+                increment: data.value
             },
-            user: {
-                connect: {
-                    externalId: UserId as string,
-                }
-            },
-            category: data.category as incomeType,
-            description: data.description,
-        },
-        create: {
-            value: data.value,
             createdAt: data.createdAt,
             asset: {
                 connect: {
@@ -98,9 +85,54 @@ export const UpsertUserIncomeAction = async (UserId: string | null, recordId: nu
     if(!upsert) {
         return Promise.reject("更新失敗，請聯絡管理員");
     }
-    
+
+    const update = await db.asset.update({
+        where: {
+            id: data.assetId,
+        },
+        data: {
+            value: {
+                increment: data.value,
+            }
+        }
+    });
+
+    if(!update) {
+        return Promise.reject("更新失敗，請聯絡管理員");
+    }
+
     revalidatePath("/home");
     return Promise.resolve("更新成功");
+}
+
+export const DeleteUserIncomeAction = async (UserId: string | null, recordId: number, assetId: number, value: number) => {
+    const deleteRecord = await db.income.delete({
+        where: {
+            id: recordId,
+        }
+    });
+
+    if(!deleteRecord) {
+        return Promise.reject("刪除失敗，請聯絡管理員");
+    }
+
+    const update = await db.asset.update({
+        where: {
+            id: assetId,
+        },
+        data: {
+            value: {
+                decrement: value,
+            }
+        }
+    });
+
+    if(!update) {
+        return Promise.reject("刪除失敗，請聯絡管理員");
+    }
+
+    revalidatePath("/home");
+    return Promise.resolve("刪除成功");
 }
 
 export const GetAssetIncomeAction = async (UserId: string | null, AssetId: number) => {

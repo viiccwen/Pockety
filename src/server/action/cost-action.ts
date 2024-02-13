@@ -60,9 +60,12 @@ export const UpdateUserCostAction = async (UserId: string | null, recordId: numb
     const upsert = await db.cost.update({
         where: {
             id: recordId,
+            externalId: UserId as string,
         },
         data: {
-            value: data.value,
+            value: {
+                increment: data.value,
+            },
             createdAt: data.createdAt,
             asset: {
                 connect: {
@@ -100,6 +103,37 @@ export const UpdateUserCostAction = async (UserId: string | null, recordId: numb
 
     revalidatePath("/home");
     return Promise.resolve("更新成功");
+}
+
+export const DeleteUserCostAction = async (UserId: string | null, recordId: number, assetId: number, value: number) => {
+    const deleteRecord = await db.cost.delete({
+        where: {
+            externalId: UserId as string,
+            id: recordId,
+        }
+    });
+
+    if(!deleteRecord) {
+        return Promise.reject("刪除失敗，請聯絡管理員");
+    }
+
+    const update = await db.asset.update({
+        where: {
+            id: assetId,
+        },
+        data: {
+            value: {
+                increment: value,
+            }
+        }
+    });
+
+    if(!update) {
+        return Promise.reject("刪除失敗，請聯絡管理員");
+    }
+
+    revalidatePath("/home");
+    return Promise.resolve("刪除成功");
 }
 
 export const GetAssetCostAction = async (UserId: string | null, AssetId: number) => {

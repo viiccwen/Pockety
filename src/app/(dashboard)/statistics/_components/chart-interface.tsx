@@ -138,8 +138,8 @@ export const ChartInterface = ({
             
             <div className="h-[600px] w-[500px]">
                 <div className="flex gap-2 p-1 bg-gray-300 rounded-sm">
-                    <Button onClick={(e) => HandleMethodClick(e)} value="month" variant='ghost' className={`flex-1 ${curMethod == 'month' ? "bg-white hover:bg-white" : 'hover:bg-inherit'}`}>月</Button>
-                    <Button onClick={(e) => HandleMethodClick(e)} value="year" variant='ghost' className={`flex-1 ${curMethod == 'year' ? "bg-white hover:bg-white" : 'hover:bg-inherit'}`}>年</Button>
+                    <Button onClick={(e) => HandleMethodClick(e)} value="month" variant='ghost' className={`flex-1 dark:text-black ${curMethod == 'month' ? "bg-white hover:bg-white" : 'hover:bg-inherit'}`}>月</Button>
+                    <Button onClick={(e) => HandleMethodClick(e)} value="year" variant='ghost' className={`flex-1 dark:text-black ${curMethod == 'year' ? "bg-white hover:bg-white" : 'hover:bg-inherit'}`}>年</Button>
                 </div>
                 <div className="flex justify-center items-center gap-3 mt-2">
                     <Button onClick={HandlePrevClick} variant='ghost'><ChevronLeft size={20} /></Button>

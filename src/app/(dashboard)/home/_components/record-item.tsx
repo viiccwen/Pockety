@@ -15,33 +15,36 @@ import { AssetsSelect, CategorySelect, DateInput, DescriptionInput, ValueInput }
 import { AssetRecordType, CostMapType, CostRecordType, IncomeMapType, IncomeRecordType } from "@/lib/type";
 import { CostAddSchema, IncomeAddSchema } from "@/lib/schema";
 
-import { UpdateUserCostAction } from "@/server/action/cost-action";
-import { UpsertUserIncomeAction } from "@/server/action/income-action";
+import { AddUserCostAction, DeleteUserCostAction, UpdateUserCostAction } from "@/server/action/cost-action";
+import { AddUserIncomeAction, DeleteUserIncomeAction, UpdateUserIncomeAction } from "@/server/action/income-action";
 import { toast } from "sonner";
 
 interface RecordCostItemProps {
+    curType: number;
     userId: string;
     record: CostRecordType | IncomeRecordType;
     assets: AssetRecordType[] | undefined;
 }
 
 export const RecordItem = ({
+    curType,
     userId,
     record, 
     assets,
 } : RecordCostItemProps) => {
     const [isOpen, setIsOpen] = useState<boolean> (false);
 
-    const [type, setType] = useState<number>(1);
+    const [type, setType] = useState<number>(curType);
     const [categoryError, setCategoryError] = useState<string>("");
     const [assetError, setAssetError] = useState<string>("");
 
+    
     const HandleSubmit = async (formdata: FormData) => {
         let condition: number = 1;
         {/*
-        condition:
-        1. 種類同 資產同
-        2. 種類同 資產不同
+        todo: condition
+        1. 種類同 資產同 - done
+        2. 種類同 資產不同 - done
         3. 種類不同 資產同 
         3. 種類不同 資產不同 
         */}
@@ -89,8 +92,22 @@ export const RecordItem = ({
 
         let pms: Promise<string>;
 
-        if(condition == 1) pms = UpdateUserCostAction(userId, record.id, check.data);
-        else pms = UpdateUserCostAction(userId, record.id, check.data);
+        if(condition == 1) {
+            type == 1 
+            ? pms = UpdateUserCostAction(userId, record.id, check.data)
+            : pms = UpdateUserIncomeAction(userId, record.id, check.data);
+        }
+        else if(condition == 2) {
+            if(type == 1) {
+                await DeleteUserCostAction(userId, record.id, record.assetId, record.value);
+                pms = AddUserCostAction(userId, check.data);
+            } else {
+                await DeleteUserIncomeAction(userId, record.id, record.assetId, record.value);
+                pms = AddUserIncomeAction(userId, check.data);
+            }
+        } else {
+            pms = UpdateUserCostAction(userId, record.id, check.data);
+        }
 
         toast.promise(pms, {
             loading: "更新中...",
@@ -149,7 +166,7 @@ export const RecordItem = ({
                             <DescriptionInput defaultDescription={record.description} />    
                         </div>
                         <DialogFooter>
-                            <Button type="submit">新增</Button>
+                            <Button type="submit">編輯</Button>
                         </DialogFooter>
                     </form>
                 <DialogFooter>

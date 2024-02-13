@@ -67,7 +67,7 @@ export const CalendarTable = ({
                                                     variant="ghost" 
                                                     value={cur_date} 
                                                     onClick={(e) => HandleSelectDate(e)}
-                                                    className={`items-start ${cur_date === selectedDate.getDate() ? "bg-amber-300 text-white" : ""}`}
+                                                    className={`items-start ${cur_date === selectedDate.getDate() ? "bg-amber-300 text-white hover:bg-amber-300" : ""}`}
                                                 >
                                                     <div className="flex flex-col">
                                                         <p>{cur_date}</p>

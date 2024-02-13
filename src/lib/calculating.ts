@@ -9,7 +9,7 @@ export const GetMonthlyTotal = (
     const curMonthlyCostTotal = GetMonthlyCost(yaer, month, costs);
     const curMonthlyIncomeTotal = GetMonthlyIncome(yaer, month, incomes);
 
-    return curMonthlyCostTotal - curMonthlyIncomeTotal;
+    return curMonthlyIncomeTotal - curMonthlyCostTotal;
 }
 
 export const GetMonthlyCost = (

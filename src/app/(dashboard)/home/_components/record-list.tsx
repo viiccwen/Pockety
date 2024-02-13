@@ -26,12 +26,12 @@ export const RecordList = ({
         <>
             {
                 selectedCost?.map((record) => (
-                    <RecordItem key={record.id} userId={userId} record={record} assets={assets} />
+                    <RecordItem key={record.id} curType={1} userId={userId} record={record} assets={assets} />
                 ))
             }
             {
                 selectedIncome?.map((record) => (
-                    <RecordItem key={record.id} userId={userId} record={record} assets={assets} />
+                    <RecordItem key={record.id} curType={2} userId={userId} record={record} assets={assets} />
                 ))
             }
         </>
