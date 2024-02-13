@@ -14,15 +14,15 @@ import { AssetRecordType, CostMapType, IncomeMapType } from "@/lib/type";
 import { Textarea } from "@/components/ui/textarea";
 import { ErrorTooltip } from "@/components/error-tooltip";
 
-export const AssetsInput = ({ assets, error } : { assets: AssetRecordType[], error: string}) => {
+export const AssetsSelect = ({ assets, error, defaultAssetId } : { assets: AssetRecordType[], error: string, defaultAssetId ?: number}) => {
     return (
+        
         <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="flex items-center justify-end gap-2">
             <ErrorTooltip error={error} />
             資產
             </Label>
-            
-            <Select name="asset">
+            <Select name="asset" defaultValue={defaultAssetId?.toString()}>
                 <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="選擇一項" />
                 </SelectTrigger>
@@ -40,15 +40,14 @@ export const AssetsInput = ({ assets, error } : { assets: AssetRecordType[], err
     );
 };
 
-export const CategorySelect = ({ isCost, error } : { isCost: boolean, error: string}) => {
+export const CategorySelect = ({ isCost, error, defaultCategory } : { isCost: boolean, error: string, defaultCategory ?: string}) => {
+
     return (
         <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="category" className="flex items-center justify-end gap-2">
-            <ErrorTooltip error={error} />
-            類別
+                <ErrorTooltip error={error} />類別
             </Label>
-            
-            <Select name="category">
+            <Select name="category" defaultValue={defaultCategory}>
                 <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="選擇一項" />
                 </SelectTrigger>
@@ -58,37 +57,47 @@ export const CategorySelect = ({ isCost, error } : { isCost: boolean, error: str
                             isCost ?
                             Array.from(CostMapType).map(([key, value]) => (
                                 <SelectItem key={key} value={key}>{value}</SelectItem>
-                            ))
-                            :
-                            Array.from(IncomeMapType).map(([key, value]) => (
-                                <SelectItem key={key} value={key}>{value}</SelectItem>
-                            ))
-                        }
+                                ))
+                                :
+                                Array.from(IncomeMapType).map(([key, value]) => (
+                                    <SelectItem key={key} value={key}>{value}</SelectItem>
+                                    ))
+                                }
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            
         </div>
     );
 };
 
-export const ValueInput = () => {
+export const ValueInput = ({ defaultValue } : { defaultValue ?: number}) => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="value" className="text-end">
             金額
             </Label>
-            <Input type="number" name="value" id="value" className="col-span-3" required/>
+            {
+                defaultValue == undefined 
+                ? <Input type="number" name="value" id="value" className="col-span-3" required/>
+                : <Input type="number" name="value" id="value" className="col-span-3" defaultValue={defaultValue} required/>
+            }
+            
         </div>
     )
 };
 
-export const DescriptionInput = () => {
+export const DescriptionInput = ({ defaultDescription } : { defaultDescription ?: string}) => {
     return (
         <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="description" className="text-end">
             備註
             </Label>
-            <Textarea name="description" id="description" className="col-span-3" />
+            {
+                defaultDescription == undefined 
+                ? <Textarea name="description" id="description" className="col-span-3" />
+                : <Textarea name="description" id="description" className="col-span-3" defaultValue={defaultDescription} />
+            }
         </div>
     )
 }

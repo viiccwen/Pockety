@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
+import { CostRecordType, IncomeRecordType } from "@/lib/type";
 import { GetMonthlyCostAction, GetYearlyCostAction } from "@/server/action/cost-action";
-import { CostRecordType } from "@/lib/type";
+import { GetMonthlyIncomeAction, GetYearlyIncomeAction } from "@/server/action/income-action";
 
 import { DisplayPieChart } from "./display-pie-chart";
 
@@ -67,23 +68,45 @@ export const ChartInterface = ({
     }
 
     const GetMonthlyData = async (year: number, month: number) => {
-        const data: CostRecordType[] = await GetMonthlyCostAction(userId, year, month);
-        return data.map(({category, value}) => {
-            return {
-                category,
-                value,
+        let data: CostRecordType[];
+
+        data = (curType === 'cost') 
+            ? await GetMonthlyCostAction(userId, year, month)
+            : await GetMonthlyIncomeAction(userId, year, month);
+        
+        let monthlyData: DataProps[] = [];
+        
+        data.map(({category, value}) => {
+            const findDataIdx = monthlyData.findIndex((ele) => ele.category === category);
+            if(findDataIdx === -1) {
+                monthlyData.push({category, value});
+            } else {
+                monthlyData[findDataIdx].value += value;
             }
         })
+
+        return monthlyData;
     }
 
     const GetYearlyData = async (year: number) => {
-        const data: CostRecordType[] = await GetYearlyCostAction(userId, year);
-        return data.map(({category, value}) => {
-            return {
-                category,
-                value,
+        let data: IncomeRecordType[];
+        
+        data = (curType === 'cost') 
+            ? await GetYearlyCostAction(userId, year)
+            : await GetYearlyIncomeAction(userId, year);
+
+        let monthlyData: DataProps[] = [];
+
+        data.map(({category, value}) => {
+            const findDataIdx = monthlyData.findIndex((ele) => ele.category === category);
+            if(findDataIdx === -1) {
+                monthlyData.push({category, value});
+            } else {
+                monthlyData[findDataIdx].value += value;
             }
         })
+
+        return monthlyData;
     }
 
     useEffect(() => {
@@ -91,10 +114,14 @@ export const ChartInterface = ({
     }, [method])
 
     useEffect(() => {
+        setCurType(type);
+    }, [type])
+
+    useEffect(() => {
         const fetchData = async () => {
             let newData: DataProps[] = [];
 
-            newData = curMethod === 'month' 
+            newData = (curMethod === 'month')
                 ? await GetMonthlyData(curYear, curMonth) 
                 : await GetYearlyData(curYear);
 
@@ -105,8 +132,6 @@ export const ChartInterface = ({
     
         setCurTitle(`${curMethod === 'month' ? `${curYear}/${curMonth}` : `${curYear}`}`);
     }, [curMonth, curYear, curMethod])
-
-    // useEffect(() => {console.log(data);},[data])
 
     return (
         <>

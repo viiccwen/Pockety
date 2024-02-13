@@ -13,16 +13,6 @@ interface DisplayPieChartProps {
   data: DataProps[] | undefined;
 }
 
-interface LabelProps {
-  cx: number;
-  cy: number;
-  midAngle: number;
-  innerRadius: number;
-  outerRadius: number;
-  value: number;
-  index: number;
-}
-
 export const DisplayPieChart = ({data} : DisplayPieChartProps) => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28','#6D83B5', '#88CCEE', '#8B00FF', '#00FFFF'];
 

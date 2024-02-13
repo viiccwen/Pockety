@@ -25,7 +25,7 @@ export const TotalPanel = ({
     useEffect(() => {
         const year = (new Date()).getFullYear();
         const month = (new Date()).getMonth() + 1;
-        const total = GetMonthlyTotal(month, year, costs, incomes);
+        const total = GetMonthlyTotal(year, month, costs, incomes);
         
         setCurMonthlyTotal(total);
     }, [costs, incomes])

@@ -56,6 +56,52 @@ export const AddUserCostAction = async (UserId: string | null, data: AddCostProp
     return Promise.resolve("新增成功");
 };
 
+export const UpdateUserCostAction = async (UserId: string | null, recordId: number, data: AddCostProps) => {
+    const upsert = await db.cost.update({
+        where: {
+            id: recordId,
+        },
+        data: {
+            value: data.value,
+            createdAt: data.createdAt,
+            asset: {
+                connect: {
+                    id: data.assetId,
+                }
+            },
+            user: {
+                connect: {
+                    externalId: UserId as string,
+                }
+            },
+            category: data.category as costType,
+            description: data.description,
+        }
+    });
+
+    if(!upsert) {
+        return Promise.reject("更新失敗，請聯絡管理員");
+    }
+
+    const update = await db.asset.update({
+        where: {
+            id: data.assetId,
+        },
+        data: {
+            value: {
+                decrement: data.value,
+            }
+        }
+    });
+
+    if(!update) {
+        return Promise.reject("更新失敗，請聯絡管理員");
+    }
+
+    revalidatePath("/home");
+    return Promise.resolve("更新成功");
+}
+
 export const GetAssetCostAction = async (UserId: string | null, AssetId: number) => {
     
     const cost = await db.cost.findMany({

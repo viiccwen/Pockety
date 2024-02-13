@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 
 import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
-import { AssetsInput, CategorySelect, DateInput, DescriptionInput, ValueInput } from "./record-add-input";
+import { AssetsSelect, CategorySelect, DateInput, DescriptionInput, ValueInput } from "@/components/record-form-input";
 import { CostAddSchema, IncomeAddSchema } from "@/lib/schema";
 import { AddUserCostAction, GetMonthlyCostAction } from "@/server/action/cost-action";
 import { AddUserIncomeAction, GetMonthlyIncomeAction } from "@/server/action/income-action";
@@ -109,19 +109,15 @@ export const RecordAddAction = ({
         <>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
 
-                {/* <DialogTrigger asChild>
-                    <Button>新增</Button>
-                </DialogTrigger> */}
-
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>新增紀錄</DialogTitle>
                     </DialogHeader>
 
                     <div className="grid grid-cols-3 gap-2">
-                        <Button variant="outline" value='1' onClick={(e) => HandleTypeClick(e)} className={`${ type === 1 ? 'bg-yellow-400' : null}`}>支出</Button>
-                        <Button variant="outline" value='2' onClick={(e) => HandleTypeClick(e)} className={`${ type === 2 ? 'bg-yellow-400' : null}`}>收入</Button>
-                        <Button variant="outline" value='3' onClick={(e) => HandleTypeClick(e)} className={`${ type === 3 ? 'bg-yellow-400' : null}`}>轉帳</Button>
+                        <Button variant="outline" value='1' onClick={(e) => HandleTypeClick(e)} className={`${ type === 1 ? 'bg-yellow-400 hover:bg-yellow-400' : null}`}>支出</Button>
+                        <Button variant="outline" value='2' onClick={(e) => HandleTypeClick(e)} className={`${ type === 2 ? 'bg-yellow-400 hover:bg-yellow-400' : null}`}>收入</Button>
+                        <Button variant="outline" value='3' onClick={(e) => HandleTypeClick(e)} className={`${ type === 3 ? 'bg-yellow-400 hover:bg-yellow-400' : null}`}>轉帳</Button>
                     </div>
 
                     <form action={HandleSubmit}>
@@ -132,7 +128,7 @@ export const RecordAddAction = ({
                                 <>
                                     <ValueInput />
                                     <DateInput curDate={curDate} />
-                                    <AssetsInput assets={assets} error={assetError} />
+                                    <AssetsSelect assets={assets} error={assetError} />
                                     <CategorySelect isCost={type === 1} error={categoryError} />
                                     <DescriptionInput />
                                 </>

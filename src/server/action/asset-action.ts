@@ -60,10 +60,9 @@ export const CreateUserAssetAction = async (UserId: string | null, data: AddProp
     });
 
     if(isNameExisted) {
-        return Promise.reject("Account already exists, please change the name.");
-    }
+        return Promise.reject("帳戶已存在，請更改名稱");
     
-    // return Promise.reject("帳戶已存在，請更改名稱");
+    }
     
     const asset = await db.asset.create({
         data: {

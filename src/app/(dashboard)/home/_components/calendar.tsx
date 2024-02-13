@@ -116,7 +116,8 @@ export const Calendar = ({
             </div>
 
             <div className="ml-5 mr-[100px]">
-                <RecordList 
+                <RecordList
+                    userId={userId} 
                     selectedCost={selectedCost} 
                     selectedIncome={selectedIncome} 
                     assets={assets}

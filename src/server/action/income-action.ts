@@ -56,6 +56,53 @@ export const AddUserIncomeAction = async (UserId: string | null, data: AddIncome
     return Promise.resolve("新增成功");
 };
 
+export const UpsertUserIncomeAction = async (UserId: string | null, recordId: number, data: AddIncomeProps) => {
+    const upsert = await db.income.upsert({
+        where: {
+            id: recordId,
+        },
+        update: {
+            value: data.value,
+            createdAt: data.createdAt,
+            asset: {
+                connect: {
+                    id: data.assetId,
+                }
+            },
+            user: {
+                connect: {
+                    externalId: UserId as string,
+                }
+            },
+            category: data.category as incomeType,
+            description: data.description,
+        },
+        create: {
+            value: data.value,
+            createdAt: data.createdAt,
+            asset: {
+                connect: {
+                    id: data.assetId,
+                }
+            },
+            user: {
+                connect: {
+                    externalId: UserId as string,
+                }
+            },
+            category: data.category as incomeType,
+            description: data.description,
+        }
+    });
+
+    if(!upsert) {
+        return Promise.reject("更新失敗，請聯絡管理員");
+    }
+    
+    revalidatePath("/home");
+    return Promise.resolve("更新成功");
+}
+
 export const GetAssetIncomeAction = async (UserId: string | null, AssetId: number) => {
         
     const income = await db.income.findMany({
@@ -88,6 +135,25 @@ export const GetMonthlyIncomeAction = async (UserId: string | null, year: number
         }
     });
 
+
+    return income;
+}
+
+export const GetYearlyIncomeAction = async (UserId: string | null, year: number) => {
+    const startDate = new Date(Date.UTC(year, 0, 1));
+    const endDate = new Date(Date.UTC(year, 12, 1));
+
+    const income = await db.income.findMany({
+        where: {
+            user: {
+                externalId: UserId as string,
+            },
+            createdAt: {
+                gte: startDate,
+                lt: endDate,
+            }
+        }
+    });
 
     return income;
 }

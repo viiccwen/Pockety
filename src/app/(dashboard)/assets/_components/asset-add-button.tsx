@@ -48,7 +48,6 @@ export const AssetAddButton = ({ userId, children } : ButtonProps) => {
         } else console.log(check.data);
 
 
-        {/* TODO: Change success to promise : loading... */}
         {/* ISSUE: Solve the "Error: Error:" string */}
         if(check.success) {
             const pms = CreateUserAssetAction(userId, check.data);
@@ -58,7 +57,7 @@ export const AssetAddButton = ({ userId, children } : ButtonProps) => {
                 error: (err) => `${err}`,
             });
             
-            // pms.then(() => setOpen(false));
+            pms.then(() => setOpen(false));
         }
     };
 
