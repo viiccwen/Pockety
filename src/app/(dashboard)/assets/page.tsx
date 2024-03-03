@@ -4,7 +4,6 @@ import { Toaster } from "sonner"
 import { AssetsList } from "./_components/asset-list";
 import { AssetsPanel } from "./_components/asset-panel";
 import { ListLoadingSkeleton, PanelLoadingSkeleton } from "./_components/asset-loading-skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function AssetsPage() {
 

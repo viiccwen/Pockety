@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs";
 import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
 import { GetAssetInfoAction, GetUserAssetAction } from "@/server/action/asset-action";
 
-import { toast } from "sonner";
+import { Toaster, toast } from "sonner";
 import { InfoTable } from "./_components/info-table";
 import { TotalPanel } from "./_components/total-panel";
 
@@ -44,6 +44,10 @@ export default async function AssetInfoPage({ params }: { params: { assetId: str
                     assets={assets}
                 />
             </div>
+
+            <Toaster
+                richColors
+            />
         </>
     )
 } 
