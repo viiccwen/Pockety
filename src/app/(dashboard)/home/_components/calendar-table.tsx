@@ -44,7 +44,7 @@ export const CalendarTable = ({
     return (
         <Table>
             <TableHeader>
-                <TableRow >
+                <TableRow>
                     {Days.map((day, index) => (
                         <TableHead key={index} className="text-center">{day}</TableHead>
                         ))}

@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 
 import { AssetRecordType, CostRecordType, IncomeRecordType } from "@/lib/type";
-import { GetAssetInfoAction } from "@/server/action/asset-action";
+import { GetAssetInfoAction, GetUserAssetAction } from "@/server/action/asset-action";
 
 import { toast } from "sonner";
 import { InfoTable } from "./_components/info-table";
@@ -16,6 +16,7 @@ export default async function AssetInfoPage({ params }: { params: { assetId: str
 
     if(user === null) return;
 
+    const assets = await GetUserAssetAction(user.id);
     const AssetRecord = await GetAssetInfoAction(user.id, parseInt(params.assetId));
     const costs: CostRecordType[] = await GetAssetCostAction(user.id, parseInt(params.assetId));
     const incomes: IncomeRecordType[] = await GetAssetIncomeAction(user.id, parseInt(params.assetId));
@@ -35,9 +36,13 @@ export default async function AssetInfoPage({ params }: { params: { assetId: str
     return (
         <>
             <div>
-                {/* TODO: Implement cost and income list with date (need to merge) */}
                 <TotalPanel asset_table={asset_data} costs={costs} incomes={incomes} />
-                <InfoTable costs={costs} incomes={incomes} />
+                <InfoTable 
+                    costs={costs} 
+                    incomes={incomes} 
+                    userId={user.id}
+                    assets={assets}
+                />
             </div>
         </>
     )

@@ -114,10 +114,9 @@ export const RecordAddAction = ({
                         <DialogTitle>新增紀錄</DialogTitle>
                     </DialogHeader>
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                         <Button variant="outline" value='1' onClick={(e) => HandleTypeClick(e)} className={`${ type === 1 ? 'bg-yellow-400 hover:bg-yellow-400' : null}`}>支出</Button>
                         <Button variant="outline" value='2' onClick={(e) => HandleTypeClick(e)} className={`${ type === 2 ? 'bg-yellow-400 hover:bg-yellow-400' : null}`}>收入</Button>
-                        <Button variant="outline" value='3' onClick={(e) => HandleTypeClick(e)} className={`${ type === 3 ? 'bg-yellow-400 hover:bg-yellow-400' : null}`}>轉帳</Button>
                     </div>
 
                     <form action={HandleSubmit}>

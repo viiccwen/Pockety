@@ -9,27 +9,29 @@ import { AddUserCostAction, DeleteUserCostAction, UpdateUserCostAction } from "@
 import { AddUserIncomeAction, DeleteUserIncomeAction, UpdateUserIncomeAction } from "@/server/action/income-action";
 import { toast } from "sonner";
 import { RecordEditForm } from "@/components/record-edit-form";
+import { Button } from "@/components/ui/button";
 
-interface RecordCostItemProps {
+import { ChevronRight } from "lucide-react";
+
+interface InfoItemProps {
     curType: number;
     userId: string;
     record: CostRecordType | IncomeRecordType;
     assets: AssetRecordType[] | undefined;
 }
 
-export const RecordItem = ({
+export const InfoItem = ({
     curType,
     userId,
-    record, 
-    assets,
-} : RecordCostItemProps) => {
+    record,
+    assets
+} : InfoItemProps) => {
     const [isOpen, setIsOpen] = useState<boolean> (false);
 
     const [type, setType] = useState<number>(curType);
     const [categoryError, setCategoryError] = useState<string>("");
     const [assetError, setAssetError] = useState<string>("");
 
-    
     const HandleSubmit = async (formdata: FormData) => {
         let condition: number = 1;
         {/*
@@ -123,21 +125,13 @@ export const RecordItem = ({
 
     return (
         <>
-            <button onClick={() => setIsOpen(true)} className="w-full duration-200 hover:opacity-75">
-                <div className="mb-3 p-2 grid grid-cols-2 grid-rows-2 font-bold bg-yellow-400 rounded-lg dark:text-black">
-                    <p className="flex items-center">{CostMapType.has(record.category) ? CostMapType.get(record.category) : IncomeMapType.get(record.category)}</p>
-                    <div className="flex justify-end">
-                        <div className={`p-1 rounded-lg text-white ${CostMapType.has(record.category) ? 'bg-red-400' : 'bg-green-400'}`}>{record.value}</div>
-                    </div>
-                    <p className="row-start-2 col-start-2 text-end">{
-                        assets?.find((asset) => {
-                            return asset.id === record.assetId;
-                        })?.name
-                    }</p>
-                </div>
-            </button>
-
-            <RecordEditForm  
+            <div>
+                <Button onClick={() => setIsOpen(true)} variant="outline" size="sm">
+                    <ChevronRight />
+                </Button>
+            </div>
+            
+            <RecordEditForm 
                 isOpen={isOpen} 
                 setIsOpen={setIsOpen} 
                 record={record} 

@@ -1,17 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CostMapType, CostRecordType, IncomeMapType, IncomeRecordType } from "@/lib/type";
+import { AssetRecordType, CostMapType, CostRecordType, IncomeMapType, IncomeRecordType } from "@/lib/type";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { RecordEditForm } from "@/components/record-edit-form";
+import { InfoItem } from "./info-item";
 
 interface InfoProps {
     costs: CostRecordType[];
     incomes: IncomeRecordType[];
+    assets: AssetRecordType[] | undefined;
+    userId: string;
 }
 
-export const InfoTable = ({ costs, incomes } : InfoProps) => {
+export const InfoTable = ({ costs, incomes, userId, assets } : InfoProps) => {
     const [infoArray, setInfoArray] = useState<(CostRecordType | IncomeRecordType) []>([]);
 
     // Merge costs and incomes with date
@@ -21,7 +25,6 @@ export const InfoTable = ({ costs, incomes } : InfoProps) => {
         });
         setInfoArray(info_table);
     }, [costs, incomes])
-    
 
     return (
         <>
@@ -36,12 +39,12 @@ export const InfoTable = ({ costs, incomes } : InfoProps) => {
                     <p>{CostMapType.has(record.category) ? CostMapType.get(record.category) : IncomeMapType.get(record.category)}</p>
                     <p>{record.createdAt.toLocaleDateString()}</p>
 
-                    {/* TODO: Implement record page with single record information */}
-                    <div>
-                        <Button variant="outline" size="sm" asChild>
-                            <Link href={`/assets/record/${record.id}`}><ChevronRight /></Link>
-                        </Button>
-                    </div>
+                    <InfoItem 
+                        curType={CostMapType.has(record.category) ? 1 : 2} 
+                        record={record}
+                        userId={userId}
+                        assets={assets}
+                    />
                 </div>
             ))}
         </>

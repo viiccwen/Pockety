@@ -47,12 +47,6 @@ const LeftBarItem = [
                 icon: <HandCoins size={17} />,
             }
         ]
-    },
-    {
-        name: "關於",
-        link: "/about",
-        icon: <UserRound size={17} />,
-        child: null,
     }
 ]
 
